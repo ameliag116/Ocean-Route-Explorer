@@ -13,8 +13,48 @@ const App = { // creating a Vue component object and storing it in the 'App' var
             const yPercent = (event.clientY / windowHeight) * 100;
             console.log(`X: ${xPercent.toFixed(2)}%, Y: ${yPercent.toFixed(2)}%`);
         }
-        const drawer = ref(false); // declaring the variable 'drawer', which represents the navigation bar defined in the index.html file, ensuring it is reactive, and setting the variable to false, ensuring it is closed by default; if the user clicks the navigation drawer icon, the variable 'drawer' should change to true 
+        const openDrawer = ref(false); // declaring the variable 'drawer', which represents the navigation bar defined in the index.html file, ensuring it is reactive, and setting the variable to false, ensuring it is closed by default; if the user clicks the navigation drawer icon, the variable 'drawer' should change to true 
         const panel = ref([]); // declaring the variable 'panel', which represents the expansion panel defined in the index.html file, ensuring the expansion panel is reactive and starts at a closed position (closed position is denoted by an empty []); if the user clicks the expansion panel header, the variable 'panel' should change to [1]
+
+        function toggleDrawer() {
+            if (openDrawer.value == false) {openDrawer.value = true}
+            else {openDrawer.value = false}
+        }
+
+        const projects = ref ([
+            {
+                title: "Home",
+                url: "https://artssci.github.io/Maritime-Commerce-and-Whale-Risks-Collective-App/index.html"
+            },
+            {
+                title: "Ocean Route Explorer",
+                url: "https://ameliag116.github.io/Ocean-Route-Explorer/ "
+            },
+            {
+                title: "Temporal Tides",
+                url: "https://nkkkkkkkkkkk.github.io/Temporal-Tides/ "
+            },
+            {
+                title: "Ocean Commotion",
+                url: "https://madsb04.github.io/Ocean-Commotion-/ "
+            },
+            {
+                title: "Jeopardy: Whale Health",
+                url: "https://roco100.github.io/Jeopardy-Whale-Health/ "
+            },
+            {
+                title: "Indigenous Perspectives in Reducing Whale Harm in Shipping Practices",
+                url: "https://genevawhite.github.io/genevacoding/"
+            },
+            {
+                title: "?",
+                url: "https://alipanju12.github.io/Traditional-Ecological-Knowledge-connection-to-Whales/ "
+            },
+            {
+                title: "Dive Into the World of Whales",
+                url: "safiya-fs.github.io/Whale-Anatomy-Module/"
+            }
+        ])
 
         const activeWhalePopup = ref(null); // declaring the variable needed to click on the whale-related popup buttons and access the corresponding popup window; when the button is clicked, we expect the variable to change to the index value, thus opening up the window
         const activeShipPopup = ref(null); // declaring the variable needed to click on the shipping-related popup buttons and access the corresponding popup window; clicking hte button changes the null value to an index value to affect this change
@@ -299,7 +339,9 @@ const App = { // creating a Vue component object and storing it in the 'App' var
         ])
 
         return {
-            drawer,
+            openDrawer,
+            toggleDrawer,
+            projects,
             panel,
             activeWhalePopup,
             activeShipPopup,
