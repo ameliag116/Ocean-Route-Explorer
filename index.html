@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<!-- ensuring the document is read by the browser as an html file -->
+<html lang="en">
+<!-- setting the language to English -->
+
+<head>
+    <meta charset="UTF-8">
+    <!-- setting the character encoding to UTF-8 to allow for the use of special characters and emojis -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- matching the screen width and ensuring a normal zoom level  -->
+    <title>Document</title>
+    <!-- setting the browser tab name -->
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@3.x/dist/vuetify.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@3.x/dist/vuetify.min.js"></script>
+    <script src="app.js" defer></script>
+    <!-- connecting this file to o ur custom JavaScript file (app.js); the links above load the various fonts, the Vue.js version 3, the Vuetify component logic, and the font logic -->
+
+    <!-- custom style to animate the sparklines/routes and adding the proper font to the entire application, spark line array is located in the js file and is also located in the next steps section of these comments -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .v-application {
+            font-family: 'Poppins', sans-serif !important;
+        }
+        .route-overlay path {
+            /* The first number is trace length and the secon is the gap in-between*/
+            stroke-dasharray: 5, 5 !important;
+            /* stroke-width: 10px !important; */
+            animation: routes 10s linear infinite !important;
+        }
+
+        @keyframes routes {
+            from {
+                stroke-dashoffset: 100;
+            }
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- specifying the layout and text for the visible portion of the application -->
+    <div id="app">
+        <v-app>
+
+            <v-navigation-drawer v-model="drawer" app>
+                <!-- adding a navigation drawer using the v-navigation-drawer component to allow users to toggle between modules/pages; using v-model to connect the navigation drawer to the specific 'drawer'variable defined in the app.js file; using v-model to connect the component with the variable allows Vue to keep the two in synch by controlling the open/close state of the drawer -->
+                <v-list>
+                    <v-list-item title="Home"></v-list-item>
+                    <v-list-item title="Ocean Route Visualizer"></v-list-item>
+                    <v-list-item title="Module 2"></v-list-item>
+                    <v-list-item title="Module 3"></v-list-item>
+                    <v-list-item title="Module 4"></v-list-item>
+                    <v-list-item title="Module 5"></v-list-item>
+                    <v-list-item title="Module 6"></v-list-item>
+                    <v-list-item title="Module 7"></v-list-item>
+                </v-list>
+            </v-navigation-drawer>
+
+            <v-app-bar app color="light-blue-darken-4">
+                <!-- using the v-app-bar compoenent to create the app bar which holds the navigation drawer icon, page title, and settings/email buttons -->
+
+                <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+                <!-- adding a navigation icon that is connected to the drawer variable, allowing users to click the icon to open or close the side menu and access different modules/pages -->
+
+                <v-spacer></v-spacer>
+                <!-- adding spacers to push the title toward the center of the page -->
+
+                <v-app-bar-title class="mx-auto"> Ocean Route Visualizer </v-app-bar-title>
+                <!-- adding the module title using the v-app-bar-title component, and ensuring the title is located at the top of the page and the center of the app bar -->
+
+                <v-spacer></v-spacer>
+                <!-- adding spacers to push the email and settings icons toward the far right of the page -->
+
+                <v-btn icon="mdi-email" @click="openEmail"></v-btn>
+                <!-- adding an email icon that will be connected to an appropriate contact/email address for users to direct questions or concerns -->
+
+                <v-btn icon="mdi-cog" @click="openSettings"></v-btn>
+                <!-- adding a settings icon that will be connected to any relevant settings or layout features -->
+
+            </v-app-bar>
+
+            <v-main>
+                <!-- adding the option "fluid" to make the container take up the whole horizontal space (we can still add custom margins using mx, my, if we so desire in the module integration assignment stage) -->
+                <v-container fluid class="mt-5">
+                    <v-expansion-panels v-model="panel">
+                        <!-- creating an expansion panel below the app bar to contain a module overview and the module instructions; using v-model to connect the expansion panel with the 'panel' variable declared in the app.js file which allows Vue to control the open/closed state of the expansion panel -->
+
+                        <v-expansion-panel>
+
+                            <v-expansion-panel-title color="blue-grey-lighten-4">
+                                <!-- using the v-expansion-panel-title to denote the header slot of the expansion panel, and then assigning a specific colour to the header slot -->
+                                Module Instructions & Shipping Channels
+                            </v-expansion-panel-title>
+
+                            <v-expansion-panel-text color="blue-grey-lighten-1">
+                                <!-- using the v-expansion-panel-text to add the content slot of the expansion panel, providing space for module instructions and additional information, and then assigning a specific colour to the context slot -->
+                                <!-- the <p> denotation allows the text to be split up in paragrpahs -->
+                                <p style="font-weight: bold;">Instructions:</p>
+                                <p>This module introduces the relationship between global shipping routes and whale
+                                migration patterns, providing users with the foundational knowledge needed to understand
+                                the broader impacts of maritime commerce on whale life. The module’s interactive map
+                                shows colour-coded shipping routes alongside major whale migration patterns. The various
+                                popup windows include research-based information, media, and interesting facts about
+                                whale-vessel interactions; many of the facts are specific to the geographical region in
+                                which the popup window is located on the map. Users are encouraged to explore the map, click on the various information
+                                buttons, and learn about how whale life is constantly impacted by global maritime
+                                commerce.</p>
+                                <br> 
+                                <!-- the <br> denotation inserts a break between paragraphs for better readability -->
+                                <p style="font-weight: bold;">Shipping Channels:</p>
+                                <p>This module explores five main channels that make up a majority of the worldwide shipping
+                                activities. These routes include the English Channel, the Malacca Strait, the Magellan Strait, 
+                                the Hormouz Strait, the Mozambique Channel, and the Panama Canal.
+                                Each of these channels and waterways hosts hundreds of vessels per day and simultaneously disrupts the feeding
+                                and migratory patterns of various species of whales and other ocean animals. Click on the buttons below to learn 
+                                more about how these mammals are impacted along the major shipping routes.</p>
+                            </v-expansion-panel-text>
+
+                        </v-expansion-panel>
+
+                        <v-expansion-panel>
+                            <!-- creating another expanstion panel for the overview of the problem, same as above -->
+
+                            <v-expansion-panel-title color="blue-grey-lighten-4">                   
+                                Overview of the Problem
+                            </v-expansion-panel-title>
+
+                            <v-expansion-panel-text color="blue-grey-lighten-1">
+                                <!-- overview expansion panel. Using the <p> and <br> for better readability again-->
+                                <p>Ship strikes are a growing global threat to whale populations. Collision risk depends 
+                                not only on where whales and vessels overlap, but also on factors such as vessel size, 
+                                speed, maritime contamination, noise pollution, and traffic density. Large ships 
+                                traveling along major shipping routes – like cargo vessels and industrial fishing 
+                                fleets – are particularly dangerous because collisions often cause severe or fatal 
+                                injuries (Bedriñana-Romano, 2021). It is estimated that around 20,000 whales are killed
+                                each year by vessel strikes worldwide, with large species such as blue, fin, humpback 
+                                and gray whales most commonly affected (Gavigan, 2025).</p>
+                                <br>
+                                <p>The true scale of the problem is likely much higher than reported because many
+                                collisions go undocumented due to limited monitoring and whales often sinking or drifting
+                                away after death. Increasing shipping activity and climate-driven changes in ocean
+                                ecosystems are also altering whale migration routes as whales search for feeding and 
+                                breeding areas, bringing them into closer contact with busy shipping corridors
+                                (Casiker, 2018; Guzman et al., 2020). As a result of these combined pressures, six of 
+                                the thirteen great whale species are now classified as endangered or vulnerable, 
+                                highlighting the urgent need to better understand and reduce ship-whale collision 
+                                risks (Johnson et al., 2022).</p>
+
+                            </v-expansion-panel-text>
+
+                        </v-expansion-panel>
+
+                    </v-expansion-panels>
+
+                    <v-row class="mt-6 my-4" align="center" justify="center">
+                        <!-- using the <v-row component to add a centered row underneath the expansion panel to act as a legend for the world map; the legend will show which coloured lines represent which type of route (ie. either the shipping routes or the whale migration routes) -->
+
+                        <v-col cols="auto" class="d-flex align-center">
+                            <v-icon small color="red" class="mr-1">mdi-ship-wheel</v-icon>
+                            <div style="width: 30px; height: 4px; background-color: rgb(208, 8, 8); margin-right: 8px;"></div>
+                            <span>Major Global Shipping Routes</span>
+                        </v-col>
+                        <!-- using the <v-col component to add a column within the legend and define major global shipping routes as pink on the world map; using the ship wheel icon alongside the text for aesthetics -->
+
+                        <v-col cols="auto" class="d-flex align-center">
+                            <v-icon small color="green" class="mr-1">mdi-fish</v-icon>
+                            <div
+                                style="width: 30px; height: 4px; background-color: rgb(187, 230, 171); margin-right: 8px;">
+                            </div>
+                            <span>Whale Migration Routes</span>
+                        </v-col>
+                        <!-- using the <v-col component to add a second column within the legend to define whale migration routes as green on the world map; using the fish icon alongside the text for aesthetics -->
+
+                    </v-row>
+
+                    <div style="position: relative; margin-top: 30px; width: 100%;">
+                        <!-- adding another container using the <div component, and using the relative position to ensure the container is positioned appropriately; all child elements with an absolute position (ie. the popups) will be positioned relative to this div, rather than the entire page; including 30 pixels of space above the div to separate the image from the expansion panel -->
+                        <v-img @click="findCoordinates" src="finalmap.png" aspect-ratio="2" class="mt-5 rounded-lg elevation-5"></v-img>
+                        <!-- inputting the map-based background using the <v-img component; the placeholder image will be replaced with the finalized world map, overlayed with the shipping and whale migration routes; in future submissions, 5-10 routes for each category will be included based off available research and visual feasibility -->
+
+
+                        <v-card v-for="item in maritimeRoutes" :key="item.name" style="position: absolute;"
+                            :style="{top: item.top, left: item.left,  width: item.width, height: item.height, transform: item.transform}"
+                            color="transparent" flat>
+
+                            <v-card-text class="fill-height">
+                                <v-sparkline :model-value="item.route" class="route-overlay" color="green" auto-draw
+                                    :height=item.lineHeight :line-width="item.lineWidth" smooth="100">
+                                </v-sparkline>
+                            </v-card-text>
+                        </v-card>
+
+                        <!-- adding in <v-icon and <v-dialog components for the buttons and popup windows of the whale migration route information points; we separated the whale and shipping routes into two separate arrays so that we could use different icons to represent each category, and to allow for more flexibility when designing the popups; the whalePoints array includes all the information and location for the whale information points; the <v-icon component includes the icon, icon's size, icon colour, and and the positioning of the icon on the map; the <v-dialog component controls the popup window which contains both a title and text; loops are used to filter through all data, since information is store in the js file in an array -->
+                        <v-icon 
+                            v-for="(point,index) in whalePoints"
+                            :key="index"
+                            icon
+                            size="21"
+                            color="blue-darken-4"
+                            style="position:absolute; z-index:10; cursor:pointer;"
+                            :style="{top: point.top,left: point.left}"
+                            @click="activeWhalePopup = index"
+                            >mdi-fish</v-icon>
+                        
+                        
+                        <v-dialog 
+                        :model-value="activeWhalePopup !== null" 
+                        width="80%" 
+                        transition="dialog-bottom-transition">
+                            <v-card v-if="activeWhalePopup !== null">
+                                <v-card-title> {{ whalePoints[activeWhalePopup].title }} </v-card-title>
+                                <!-- accessing the title and text of the whalePoints objects -->
+                                <v-card-text> {{ whalePoints[activeWhalePopup].text }}
+                                <v-img
+                                    v-if="whalePoints[activeWhalePopup].image"
+                                    :src="whalePoints[activeWhalePopup].image"
+                                    class="mt-5 rounded-lg elevation-5"
+                                ></v-img>
+
+                                <!-- adding the cards using a <v-row for organization and <v-col to ensure that multiple cards can be placed beside each other; the card colour, text size, and other visual components are outlined using this component and, of course, the <v-card component; a loop is used to ensure that all cards function separately; the <v-btn component allows for the close button found on the popup windows and is set to null to ensure the popup windows appear accurately -->
+                                <v-row v-if="whalePoints[activeWhalePopup].cards?.length" class="mt-8" align="stretch" justify="center" dense>
+                                    <v-col
+                                        v-for="(card, index) in whalePoints[activeWhalePopup].cards"
+                                        :key="index"
+                                        cols="12"
+                                    >
+                                        <v-card color="blue-grey-lighten-5" elevation="2" class="w-100">
+                                            <v-card-text style="font-size: 18px; line-height: 1.6; font-weight: 500">
+                                                {{ card.text }}
+                                            </v-card-text>
+                                            <v-card-text style="font-size: 12px; line-height: 1.6; font-weight: 500">
+                                                {{ card.reference }}
+                                            </v-card-text>
+
+                                        </v-card>
+                                    </v-col>
+
+                                </v-row>
+                                </v-card-text>
+
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn @click="activeWhalePopup = null"> Close </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+
+                        <!-- adding in <v-icon and <v-dialog components for the buttons and popup windows for the shipping route information points; the shipPoints array includes all the information and location for these various points; the <v-icon component includes the icon, icon's size, icon colour, and and the positioning of the icon on the map; the <v-dialog component controls the popup window which contains both a title and text -->
+                        <v-icon 
+                            v-for="(point,index) in shipPoints"
+                            :key="index"
+                            icon
+                            size="24"
+                            color="black"
+                            style="position:absolute; z-index:10; cursor:pointer;"
+                            :style="{top: point.top,left: point.left}"
+                            @click="activeShipPopup = index"
+                            >mdi-ship-wheel</v-icon>
+                        
+                        
+                        <v-dialog 
+                        :model-value="activeShipPopup !== null" 
+                        width="80%" 
+                        transition="dialog-bottom-transition">
+                            <v-card v-if="activeShipPopup !== null">
+                                <v-card-title> {{ shipPoints[activeShipPopup].title }} </v-card-title>
+                                <v-card-text> {{ shipPoints[activeShipPopup].text }}
+                                <v-img
+                                    v-if="shipPoints[activeShipPopup].image"
+                                    :src="shipPoints[activeShipPopup].image"
+                                    class="mt-5 rounded-lg elevation-5">
+                                </v-img>
+
+                                <!-- adding in a <div and <iframe to embed a YouTube video into one of the popups; however, there is a bug/issue in the code somewhere preventing the video from running properly (see the next steps section for more information about how we plan to navigate this issue) -->
+                                <div v-if="shipPoints[activeShipPopup].video" style="margin-top:20px;">
+                                    <iframe
+                                    width="100%"
+                                    height="315"
+                                    :src="shipPoints[activeShipPopup].video"
+                                    title="YouTube video player"
+                                    frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen></iframe>
+                                </div>
+
+                                <!-- adding the cards using a <v-row for organization and <v-col to ensure that multiple cards created by the <v-card component can be placed beside each other; the card colour, text size, and other visual components are outlined using this component; the card includes both text and references for each shipping route, located from the shipPoints array; a loop is used to ensure that all cards function separately; the <v-btn component allows for the close button found on the popup windows and is set to null to ensure the popup windows appear accurately -->
+                                <v-row v-if="shipPoints[activeShipPopup].cards?.length" class="mt-8" align="stretch" justify="center" dense>
+                                    <v-col
+                                        v-for="(card, index) in shipPoints[activeShipPopup].cards"
+                                        :key="index"
+                                        cols="12"
+                                    >
+                                        <v-card color="blue-grey-lighten-5" elevation="2" class="w-100">
+                                            <v-card-text style="font-size: 18px; line-height: 1.6; font-weight: 500">
+                                                {{ card.text }}
+                                            </v-card-text>
+                                            <v-card-text style="font-size: 12px; line-height: 1.6; font-weight: 500">
+                                                {{ card.reference }}
+                                            </v-card-text>
+
+                                        </v-card>
+                                    </v-col>
+
+                                </v-row>
+
+                                </v-card-text>
+
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn @click="activeShipPopup = null"> Close </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+
+                    </div>
+
+                    <!-- adding in an expansion panel at the bottom of the application for references; the reference section is divided into three components where the references for text and images, references for the data visualization component of the map, and the suggested citation for those who wish to reference this application -->
+                    <v-expansion-panels class="mt-6">
+                        <v-expansion-panel>
+                            <v-expansion-panel-title color="blue-grey-lighten-4"> Data Sources </v-expansion-panel-title>
+                            <v-expansion-panel-text color="blue-grey-lighten-1"> 
+                                <p style="font-weight: bold;">Text & Image References</p>
+                                <p>Agbetiloye, A. (2026, March 9). From Suez to the Cape: Africa’s most important shipping routes shaping global trade. Business Insider. https://africa.businessinsider.com/local/markets/from-suez-to-the-cape-africas-most-important-shipping-routes-shaping-global-trade/gzgkpsh</p>
+                               <br> <p>Bedriñana-Romano, L., Hucke-Gaete, R., Viddi, F. A., Johnson, D., Zerbini, A.N., Morales, J., Mate, B., & Palacios, D. M. (2021). Defining priority areas for blue whale conservation and investigating overlap with vessel traffic in Chilean Patagonia, using a fast-fitting movement model. Scientific Reports, 11. https://doi.org/10.1038/s41598-021-82220-5</p>
+                                <br> <p>Britannica Editors (2025, December 4). Mozambique Channel. Encyclopedia Britannica. https://www.britannica.com/place/Mozambique-Channel</p>
+                                <br> <p>Britannica Editors (2026a, January 20). Strait of Malacca. Encyclopedia Britannica. https://www.britannica.com/place/Strait-of-Malacca</p>
+                                <br> <p>Britannica Editors (2026b, March 11). Strait of Hormuz. Encyclopedia Britannica. https://www.britannica.com/place/Strait-of-Hormuz</p>
+                                <br> <p>Calambokidis, J. (Photographer). (n.d.). Whale’s fin shown with a shipping vessel in the background [Photograph]. Canadian Press via CBC News. https://www.cbc.ca/news/science/light‑colour‑whales‑tan‑for‑sun‑protection‑study‑finds‑1.1362858</p>
+                                <br> <p>Casiker, C. (2018, February 20). Traversing the endless blue: The Adventurous voyages of whales. Research Matters. https://researchmatters.in/news/traversing-endless-blue-adventurous-voyages-whales</p>
+                                <br> <p>Chambault, P., Fossette, S., Heide‐Jørgensen, M. P., Jouannet, D., & Vély, M. (2021). Predicting seasonal movements and distribution of the sperm whale using machine learning algorithms. Ecology and Evolution, 11(3), 1432–1445. https://doi.org/10.1002/ece3.7154</p>
+                               <br>  <p>Feingold, S., & Willige, A. (2024, February 15). These are the world’s most vital waterways for Global Trade. World Economic Forum. https://www.weforum.org/stories/2024/02/worlds-busiest-ocean-shipping-routes-trade/</p>
+                                <p>Gavigan, E. (2025, August 13) 20,000 Whales Are Killed by Ship Strikes Each Year. IMMP. https://savedolphins.eii.org/news/20-000-whales-are-killed-by-ship-strikes-each-year</p> 
+                               <br> <p>Guzman, H. (2016) Humpback Highway: Creating Traffic Separation Schemes to Protect Whales in the Eastern Pacific [project]. Smithsonian Global. https://global.si.edu/projects/humpback-highway-creating-traffic-separation-schemes-protect-whales-eastern-pacific</p>
+                                <br> <p>Guzman, H. M., Capella, J. J., Valladares, C., Gibbons, J., Condit, R. (2020) Humpback whale movements in a narrow and heavily-used shipping passage, Chile. Marine Policy, 118.   https://doi.org/10.1016/j.marpol.2020.103990</p> 
+                                International Union for Conservation of Nature. (2020). The IUCN Red List of Threatened Species. Western Gray Whale. https://www.iucnredlist.org/species/8099/50345475</p>
+                                <br> <p>International Whaling Commission. (n.d.). Right whale. IWC Whale Watching Handbook. https://wwhandbook.iwc.int/en/species/right-whale</p>
+                                <br> <p>Johnson, C., Reisinger, R., Palacios, D., Friedlaender, A., Zerbini, A., Willson, A., Lancaster, M., Battle, J., Graham, A., Cosandey-Godin, A., Jacob T., Felix, F., Grilly, E., Shahid, U., Houtman, N., Alberini, A., Montecinos, Y., Najera, E. and Kelez, S. (2022). Protecting Blue Corridors, Challenges and Solutions for Migratory Whales Navigating International and National Seas. WWF, Oregon State University, University of California, Santa Cruz, Publisher: WWF International, Switzerland. https://zenodo.org/records/6196131</p>
+                                <br> <p>Johnson, C. (n.d.) Whales on the move - mapping threats and solutions for our ocean giants. WWF.  https://wwfwhales.org/news-stories/whales-on-the-move</p>
+                                <br> <p>Mate, B. R., Ilyashenko, V. Yu., Bradford, A. L., Vertyankin, V. V., Tsidulko, G. A., Rozhnov, V. V., & Irvine, L. M. (2015). Critically endangered western gray whales migrate to the eastern North Pacific. Biology Letters, 11(4), 20150071. https://doi.org/10.1098/rsbl.2015.0071</p>
+                                <br> <p>Nanayakkara, R. P., & Herath, H. M. (2017). Report on 14 large whales that died due to ship strikes off the coast of Sri Lanka, 2010–2014. Journal of Marine Biology, 2017, 1–7. https://doi.org/10.1155/2017/6235398</p>
+                                <br> <p>Nisi, A. C., Welch, H., Brodie, S., Leiphardt, C., Rhodes, R., Hazen, E. L., Redfern, J. V., Branch, T. A., Barreto, A. S., Calambokidis, J., Clavelle, T., Dares, L., de Vos, A., Gero, S., Jackson, J. A., Kenney, R. D., Kroodsma, D., Leaper, R., McCauley, D. J., … Abrahms, B. (2024). Ship collision risk threatens whales across the world’s oceans. Science, 386(6724), 870–875. https://doi.org/10.1126/science.adp1950</p>
+                                <br> <p>Peel, D., Smith, J. N., & Childerhouse, S. (2018). Vessel strike of whales in Australia: The challenges of analysis of historical incident data. Frontiers in Marine Science, 5. https://doi.org/10.3389/fmars.2018.00069</p>
+                                <br> <p>Pirotta, V., Grech, A., Jonsen, I. D., Laurance, W. F., & Harcourt, R. G. (2018). Consequences of global shipping traffic for marine giants. Frontiers in Ecology and the Environment, 17(1), 39–47. https://doi.org/10.1002/fee.1987</p>
+                                <br> <p>Rochon, K. (2025, January 9). Sperm whale. The Canadian Encyclopedia. https://www.thecanadianencyclopedia.ca/en/article/sperm-whale</p>
+                                <br> <p>Thia-Eng, C., Gorre, I. R. L., Ross, S. A., Bernad, S. R., Gervacio, B., & Ebarvia, M. C. (2000). The Malacca Straits. Marine Pollution Bulletin, 41(1–6), 160–178. https://doi.org/https://doi.org/10.1016/S0025-326X(00)00108-9</p>
+                               <br>  <p>Wang, B., Zhao, L., Lu, T., Li, L., Li, T., Cong, B., & Liu, S. (2025). Global hotspots of whale–ship collision risk: A multi-species framework integrating critical habitat zonation and shipping pressure for conservation prioritization. Animals, 15(14), 2144. https://doi.org/10.3390/ani15142144</p>
+                                <br> <p>Western North Pacific Gray Whales. Marine Mammal Commission. (2025, January 17). https://www.mmc.gov/priority-topics/species-of-concern/western-north-pacific-gray-whales/</p>
+                                <br> 
+                                <!-- the <br> denotation inserts a break between paragraphs for better readability -->
+                                <p style="font-weight: bold;">Data Visualization References</p>
+                                <p>Palacios, D., Reisinger, R., Friedlaender, A., Zerbini, A., Preito, R., De Silva, M., Ferguson, S., Panigada, S., Lydersen, C., Vermuelen, E., Rosenbaum, H., Dulau, V., Herr, H., Constantine, R., Sironi, M., Sepúlveda, M., Falabella, V., Uhart, M., Coscarella, M., Andriolo, A., Schorr, G., Gonzalez, R., Willson, A., Willson, M.S., Carroll, E.,  Riekkola, L., Harcourt, R., Botero Acosta, N., Wilson, T., Vely, M., Saloma, A., Seakamela, M., Lesage, V., Panigada, V., Cerchio, S., Adam, A., Trudelle, L., Matthews, C.,  Lawson, J. and Andrews-Goff, V. (2025). Protecting Blue Corridors Dataset - bluecorridors.org., Casiker, C. (2018)., Peel, D., Smith, J. N., & Childerhouse, S. (2018)., Willige, A. (2024) - marrievesseltraffic.com., Chambault, P., Fossette, S., Heide‐Jørgensen, M. P., Jouannet, D., & Vély, M. (2021)., NACIS. </p>
+                                <br> 
+                                <p style="font-weight: bold;">Suggested Citation</p>
+
+                                <p>Rachel Lewars & Amelia Glaab (c), McMaster University, March 11, 2026</p>
+</p>                            </v-expansion-panel-text>
+                        </v-expansion-panel>
+                    </v-expansion-panels>
+
+                </v-container>
+            </v-main>
+        </v-app>
+    </div>
+
+<!-- next steps and areas for technical help:
+    - YouTube video glitch: the video embedded in one of the shipping route popups is not currently loading. We tried to troubleshoot this issue using tips from the labs, tips found online, and the developer tools, but have had no success. The use of videos breaks up some of the larger text components of our module and we feel passionate about including some, so we plan to attend Office Hours to continue troubleshooting this issue
+    - Citations: we have included all references for the module thus far, including references for both the text/images and the shipping/whale routes. As discussed in Office Hours, we used a specific "data visualization" citation formatting for the latter, but we will need to confirm whether this style is appropriate for our module and adjust accordingly
+    - Images & facts: we have added either a visual aid or related facts to each popup, but we are still planning to add in more visual components, including both images and videos, as we have noticed that our module is quite text heavy. We plan to attend Office Hours to discuss this component as well, and we also plan to update the existing images to ensure they are not blurry (as we noticed some blurriness upon transferring the images onto the module)
+    - Sparklines: we have not added the sparklines in to match the existing routes yet, but since we are planning to do this in the coming week, we have left in the code suggested through the feedback of our last deliverable
+    - Aesthetics, colour scheme: as discussed in our previous meeting, we have only started finalizing the aesthetic components of the module. We plan to match our font and colours with the other modules for the next deliverable, and finalize the aesthetics, layout, and any other visual details
+    - Challenges with opening popup windows: we have noticed that if the user does not click the close button on any given popup window, they are unable to open any new popup windows of the same category (category as in other shipping buttons or whale buttons). We believe this issue to result from the code not automatically resetting the activeWhalePopup or activeShipPopup variables back to null after the window closes, so no new popups are able to open. We have tried to troubleshoot this issue but have been unable to gain any success; we plan to discuss the glitch/issue further in Office Hours -->
