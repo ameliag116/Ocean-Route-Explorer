@@ -16,7 +16,7 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@3.x/dist/vuetify.min.js"></script>
     <script src="app.js" defer></script>
-    <!-- connecting this file to o ur custom JavaScript file (app.js); the links above load the various fonts, the Vue.js version 3, the Vuetify component logic, and the font logic -->
+    <!-- connecting this file to our custom JavaScript file (app.js); the links above load the various fonts, the Vue.js version 3, the Vuetify component logic, and the font logic -->
 
     <!-- custom style to animate the sparklines/routes and adding the proper font to the entire application, spark line array is located in the js file and is also located in the next steps section of these comments -->
     <style>
@@ -49,30 +49,32 @@
     <div id="app">
         <v-app>
 
-            <v-navigation-drawer v-model="drawer" app>
+            <v-navigation-drawer v-model="openDrawer" app>
                 <!-- adding a navigation drawer using the v-navigation-drawer component to allow users to toggle between modules/pages; using v-model to connect the navigation drawer to the specific 'drawer'variable defined in the app.js file; using v-model to connect the component with the variable allows Vue to keep the two in synch by controlling the open/close state of the drawer -->
                 <v-list>
-                    <v-list-item title="Home"></v-list-item>
-                    <v-list-item title="Ocean Route Visualizer"></v-list-item>
-                    <v-list-item title="Module 2"></v-list-item>
-                    <v-list-item title="Module 3"></v-list-item>
-                    <v-list-item title="Module 4"></v-list-item>
-                    <v-list-item title="Module 5"></v-list-item>
-                    <v-list-item title="Module 6"></v-list-item>
-                    <v-list-item title="Module 7"></v-list-item>
+                    <v-list-item 
+                        v-for="item in projects" 
+                        :key="item.title" 
+                        :href="item.url">
+
+                        <v-list-item-title>
+                            {{ item.title }}
+                        </v-list-item-title>
+
+                    </v-list-item>
                 </v-list>
             </v-navigation-drawer>
 
-            <v-app-bar app color="light-blue-darken-4">
+            <v-app-bar app color="#4E8D9C">
                 <!-- using the v-app-bar compoenent to create the app bar which holds the navigation drawer icon, page title, and settings/email buttons -->
 
-                <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+                <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
                 <!-- adding a navigation icon that is connected to the drawer variable, allowing users to click the icon to open or close the side menu and access different modules/pages -->
 
                 <v-spacer></v-spacer>
                 <!-- adding spacers to push the title toward the center of the page -->
 
-                <v-app-bar-title class="mx-auto"> Ocean Route Visualizer </v-app-bar-title>
+                <v-app-bar-title class="mx-auto"> Ocean Route Explorer </v-app-bar-title>
                 <!-- adding the module title using the v-app-bar-title component, and ensuring the title is located at the top of the page and the center of the app bar -->
 
                 <v-spacer></v-spacer>
@@ -376,4 +378,4 @@
     - Images & facts: we have added either a visual aid or related facts to each popup, but we are still planning to add in more visual components, including both images and videos, as we have noticed that our module is quite text heavy. We plan to attend Office Hours to discuss this component as well, and we also plan to update the existing images to ensure they are not blurry (as we noticed some blurriness upon transferring the images onto the module)
     - Sparklines: we have not added the sparklines in to match the existing routes yet, but since we are planning to do this in the coming week, we have left in the code suggested through the feedback of our last deliverable
     - Aesthetics, colour scheme: as discussed in our previous meeting, we have only started finalizing the aesthetic components of the module. We plan to match our font and colours with the other modules for the next deliverable, and finalize the aesthetics, layout, and any other visual details
-    - Challenges with opening popup windows: we have noticed that if the user does not click the close button on any given popup window, they are unable to open any new popup windows of the same category (category as in other shipping buttons or whale buttons). We believe this issue to result from the code not automatically resetting the activeWhalePopup or activeShipPopup variables back to null after the window closes, so no new popups are able to open. We have tried to troubleshoot this issue but have been unable to gain any success; we plan to discuss the glitch/issue further in Office Hours -->
+    - Challenges with opening popup windows: we have noticed that if the user does not click the close button on any given popup window, they are unable to open any new popup windows of the same category (category as in other shipping buttons or whale buttons). We believe this issue to result from the code not automatically resetting the activeWhalePopup or activeShipPopup variables back to null after the window closes, so no new popups are able to open. We have tried to troubleshoot this issue but have been unable to gain any success; we plan to discuss the glitch/issue further in Office Hours -->th opening popup windows: we have noticed that if the user does not click the close button on any given popup window, they are unable to open any new popup windows of the same category (category as in other shipping buttons or whale buttons). We believe this issue to result from the code not automatically resetting the activeWhalePopup or activeShipPopup variables back to null after the window closes, so no new popups are able to open. We have tried to troubleshoot this issue but have been unable to gain any success; we plan to discuss the glitch/issue further in Office Hours -->
