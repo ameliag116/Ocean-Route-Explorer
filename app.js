@@ -202,7 +202,7 @@ const App = { // creating a Vue component object and storing it in the 'App' var
                 url: "https://genevawhite.github.io/genevacoding/"
             },
             {
-                title: "?",
+                title: "Relationships Between Traditional and Western Ecological Knowledge in Whale Protection Practices",
                 url: "https://alipanju12.github.io/Traditional-Ecological-Knowledge-connection-to-Whales/ "
             },
             {
